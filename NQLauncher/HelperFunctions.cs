@@ -48,7 +48,12 @@ namespace NQLauncher
                 }
             }
             DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.Name, dlcFolder);
-            Process.Start(configFile.gameLocation + @"\Launcher.exe");
+
+            ProcessStartInfo civ5 = new ProcessStartInfo();
+            civ5.FileName = configFile.gameLocation + @"\Launcher.exe";
+            civ5.Arguments = configFile.launchParameters;
+            civ5.WorkingDirectory = Path.GetDirectoryName(configFile.gameLocation + @"\Launcher.exe");
+            Process.Start(civ5);
         }
 
         public static ConfigFile ReadConfigFile()
@@ -56,7 +61,10 @@ namespace NQLauncher
             if (!File.Exists(@"config.txt"))
             {
                 // Create a default config file with gameLocation pointing to default steam location if it doesn't exist.
-                File.WriteAllText(@"config.txt", @"{""gameLocation"":""C:\\Program Files (x86)\\Steam\\steamapps\\common\\Sid Meier's Civilization V""}" + Environment.NewLine);
+                ConfigFile configFile = new ConfigFile();
+                configFile.gameLocation = @"C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization V";
+                configFile.launchParameters = @"\dx11";
+                File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile));
             }
             return JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(@"config.txt"));
         }

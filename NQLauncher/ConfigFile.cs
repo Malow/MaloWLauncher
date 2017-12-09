@@ -9,5 +9,6 @@ namespace NQLauncher
     class ConfigFile
     {
         public string gameLocation;
+        public string launchParameters;
     }
 }
