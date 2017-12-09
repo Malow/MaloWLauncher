@@ -1,0 +1,68 @@
+﻿<Window x:Class="NQLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NQLauncher"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        ContentRendered="Window_ContentRendered"
+        Title="NQLauncher" Height="700" Width="500">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="SampleMods">
+            <ObjectDataProvider.ObjectInstance>
+                <x:Array Type="local:ModModel">
+                    <local:ModModel Name="nq1" Released="2017-11-29"/>
+                    <local:ModModel Name="nq2" Released="2017-11-29"/>
+                    <local:ModModel Name="nq3" Released="2017-11-29"/>
+                </x:Array>
+            </ObjectDataProvider.ObjectInstance>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <Label Content="NQLauncher" FontSize="28" Margin="10,0,-10,0"/>
+        <Label Name="VersionLabel" Content="" FontSize="20" Margin="194,9,-194,-9"/>
+        <Button Content="Refresh" Margin="0,10,10,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <ListView Margin="10,50,10,10" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Name}" FontSize="16"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <Label Content="Released: " FontSize="12"/>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Released}" FontSize="12"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" Click="ModButton_Clicked" Padding="5,0,5,0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
+
