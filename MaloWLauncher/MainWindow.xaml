@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MaloWLauncher"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         ContentRendered="Window_ContentRendered"
         Title="MaloWLauncher" Height="700" Width="500">
@@ -18,10 +19,11 @@
                 </x:Array>
             </ObjectDataProvider.ObjectInstance>
         </ObjectDataProvider>
+        <clr:String x:Key="SampleVersion">v0.0.1</clr:String>
     </Window.Resources>
     <Grid>
         <Label Content="MaloWLauncher" FontSize="28" Margin="10,0,-10,0"/>
-        <Label Name="VersionLabel" Content="" FontSize="20" Margin="194,9,-194,-9"/>
+        <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="316,9,-316,-9"/>
         <Button Content="Refresh" Margin="0,10,10,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
         <ListView Margin="10,50,10,10" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
             <ListView.ItemContainerStyle>
