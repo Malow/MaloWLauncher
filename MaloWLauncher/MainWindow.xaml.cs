@@ -21,9 +21,9 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.IO.Compression;
-using static NQLauncher.ModList;
+using static MaloWLauncher.ModList;
 
-namespace NQLauncher
+namespace MaloWLauncher
 {    
     public partial class MainWindow : Window
     {

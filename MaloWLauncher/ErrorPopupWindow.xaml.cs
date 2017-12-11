@@ -12,11 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace NQLauncher
+namespace MaloWLauncher
 {
-    public partial class ProgressPopupWindow : Window
+    /// <summary>
+    /// Interaction logic for ErrorPopup.xaml
+    /// </summary>
+    public partial class ErrorPopupWindow : Window
     {
-        public ProgressPopupWindow()
+        public ErrorPopupWindow()
         {
             InitializeComponent();
         }

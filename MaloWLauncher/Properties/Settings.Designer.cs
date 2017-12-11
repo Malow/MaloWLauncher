@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NQLauncher.Properties
+namespace MaloWLauncher.Properties
 {
 
 
