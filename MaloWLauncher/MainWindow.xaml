@@ -25,7 +25,7 @@
         <Label Content="MaloWLauncher" FontSize="28" Margin="10,0,-10,0"/>
         <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="316,9,-316,-9"/>
         <Button Content="Refresh" Margin="0,10,10,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-        <ListView Margin="10,50,10,10" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
+        <ListView Margin="10,50,10,50" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Focusable" Value="False"/>
@@ -65,6 +65,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="Remove All Mods" Margin="10,50,10,10" Click="RemoveAllMods_Clicked" FontSize="20" Height="35" Width="180" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button Content="Launch Civ 5" Margin="10,50,10,10" Click="LaunchCiv5_Clicked" FontSize="20" Height="35" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </Window>
 

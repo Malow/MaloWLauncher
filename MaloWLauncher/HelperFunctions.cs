@@ -35,7 +35,7 @@ namespace MaloWLauncher
             "UI_bc1",
         });
 
-        public static void LaunchGameWithMod(ModModel mod)
+        public static void UpdateToMod(ModModel mod)
         {
             ConfigFile configFile = ReadConfigFile();
             string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";
@@ -47,8 +47,15 @@ namespace MaloWLauncher
                     Directory.Delete(subdirectory, true);
                 }
             }
-            DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.Name, dlcFolder);
+            if (mod != null)
+            {
+                DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.Name, dlcFolder);
+            }
+        }
 
+        public static void LaunchCiv5()
+        {
+            ConfigFile configFile = ReadConfigFile();
             ProcessStartInfo civ5 = new ProcessStartInfo();
             civ5.FileName = configFile.gameLocation + @"\Launcher.exe";
             civ5.Arguments = configFile.launchParameters;
