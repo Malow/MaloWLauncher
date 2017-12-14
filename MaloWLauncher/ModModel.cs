@@ -47,7 +47,7 @@ namespace MaloWLauncher
                     this.IsDownloadedValue = value;
                     if (this.IsDownloadedValue == true)
                     {
-                        this.ButtonText = "Play";
+                        this.ButtonText = "Install";
                     }
                     else
                     {

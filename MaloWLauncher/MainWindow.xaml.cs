@@ -68,13 +68,23 @@ namespace MaloWLauncher
             UpdateModsList(sender, e);
         }
 
+        private void RemoveAllMods_Clicked(object sender, RoutedEventArgs e)
+        {
+            HelperFunctions.UpdateToMod(null);
+        }
+
+        private void LaunchCiv5_Clicked(object sender, RoutedEventArgs e)
+        {
+            HelperFunctions.LaunchCiv5();
+        }
+
         private void ModButton_Clicked(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             ModModel mod = button.DataContext as ModModel;
             if(mod.IsDownloaded)
             {
-                HelperFunctions.LaunchGameWithMod(mod);
+                HelperFunctions.UpdateToMod(mod);
             } else
             {
                 DownloadMod(mod);
