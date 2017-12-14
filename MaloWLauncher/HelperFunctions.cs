@@ -95,6 +95,25 @@ namespace MaloWLauncher
             return false;
         }
 
+        public static bool IsModInstalled(String modName)
+        {
+            ConfigFile configFile = ReadConfigFile();
+            string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";
+            if (Directory.Exists(dlcFolder))
+            {
+                string[] subDirectories = Directory.GetDirectories(dlcFolder);
+                foreach (string subdirectory in subDirectories)
+                {
+                    string m = subdirectory.Split('\\').Last();
+                    if (modName == m)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public static ModList GetModsListFromServer()
         {
             using (WebClient wc = new WebClient())

@@ -14,6 +14,8 @@ namespace MaloWLauncher
         public string Released { get; set; }
         public string ButtonText { get; set; } = "Download";
         private bool IsDownloadedValue = false;
+        private bool IsInstalledValue = false;
+        public string InstalledText { get; set; } = "";
         public string DownloadURL { get; set; }
 
         public string Name
@@ -55,6 +57,39 @@ namespace MaloWLauncher
                     }
                     NotifyPropertyChanged("ButtonText");
                 }
+            }
+        }
+
+        public bool IsInstalled
+        {
+            get
+            {
+                return this.IsInstalledValue;
+            }
+
+            set
+            {
+                if (value != this.IsInstalledValue)
+                {
+                    this.IsInstalledValue = value;
+                    if (this.IsInstalledValue == true)
+                    {
+                        this.InstalledText = "";
+                    }
+                    else
+                    {
+                        this.InstalledText = "(INSTALLED)";
+                    }
+                    NotifyPropertyChanged("InstalledText");
+                }
+            }
+        }
+
+        public bool CanInstall
+        {
+            get
+            {
+                return !this.IsInstalledValue;
             }
         }
 
