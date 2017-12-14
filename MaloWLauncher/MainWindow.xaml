@@ -10,6 +10,7 @@
         ContentRendered="Window_ContentRendered"
         Title="MaloWLauncher" Height="700" Width="500">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <ObjectDataProvider x:Key="SampleMods">
             <ObjectDataProvider.ObjectInstance>
                 <x:Array Type="local:ModModel">
@@ -58,7 +59,7 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" Click="ModButton_Clicked" Padding="5,0,5,0"/>
+                                <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" Click="ModButton_Clicked" Padding="5,0,5,0" Visibility="{Binding Path=CanInstall, Converter={StaticResource BoolToVis}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

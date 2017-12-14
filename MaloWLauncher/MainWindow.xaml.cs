@@ -179,6 +179,7 @@ namespace MaloWLauncher
                 foreach (ModModel mod in modModels)
                 {
                     mod.IsDownloaded = HelperFunctions.IsModDownloaded(mod.Name);
+                    mod.IsInstalled = HelperFunctions.IsModInstalled(mod.Name);
                 }
             }));
         }
@@ -218,6 +219,7 @@ namespace MaloWLauncher
                             Name = modInfo.Name,
                             Released = modInfo.Released.ToString("yyyy-MM-dd"),
                             IsDownloaded = HelperFunctions.IsModDownloaded(modInfo.Name),
+                            IsInstalled = HelperFunctions.IsModInstalled(modInfo.Name),
                             DownloadURL = modInfo.DownloadURL
                         });
                     }));
