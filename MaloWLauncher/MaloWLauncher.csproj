@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataFile.cs" />
     <Compile Include="ConfigFile.cs" />
     <Compile Include="NewVersionPopupWindow.xaml.cs">
       <DependentUpon>NewVersionPopupWindow.xaml</DependentUpon>
