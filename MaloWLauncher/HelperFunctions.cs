@@ -47,10 +47,19 @@ namespace MaloWLauncher
                     Directory.Delete(subdirectory, true);
                 }
             }
+
+            DataFile dataFile = new DataFile();
             if (mod != null)
             {
+                dataFile.installedMod = mod.Name;
                 DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.Name, dlcFolder);
             }
+            else
+            {
+                dataFile.installedMod = "none";
+            }
+
+            File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile));
         }
 
         public static void LaunchCiv5()
@@ -76,6 +85,18 @@ namespace MaloWLauncher
             return JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(@"config.txt"));
         }
 
+        public static DataFile ReadDataFile()
+        {
+            if (!File.Exists(@"data.txt"))
+            {
+                // Create a default data file with no mods installed.
+                DataFile dataFile = new DataFile();
+                dataFile.installedMod = "none";
+                File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile));
+            }
+            return JsonConvert.DeserializeObject<DataFile>(File.ReadAllText(@"data.txt"));
+        }
+
         public static bool IsModDownloaded(String modName)
         {
             string modsFolder = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\";
@@ -97,21 +118,7 @@ namespace MaloWLauncher
 
         public static bool IsModInstalled(String modName)
         {
-            ConfigFile configFile = ReadConfigFile();
-            string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";
-            if (Directory.Exists(dlcFolder))
-            {
-                string[] subDirectories = Directory.GetDirectories(dlcFolder);
-                foreach (string subdirectory in subDirectories)
-                {
-                    string m = subdirectory.Split('\\').Last();
-                    if (modName == m)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return (modName == ReadDataFile().installedMod);
         }
 
         public static ModList GetModsListFromServer()
