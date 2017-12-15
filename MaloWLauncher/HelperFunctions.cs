@@ -35,7 +35,14 @@ namespace MaloWLauncher
             "UI_bc1",
         });
 
-        public static void UpdateToMod(ModModel mod)
+        public static void UpdatedLaunchParameters(string launchString)
+        {
+            ConfigFile configFile = ReadConfigFile();
+            configFile.launchParameters = launchString;
+            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile));
+        }
+
+    public static void UpdateToMod(ModModel mod)
         {
             ConfigFile configFile = ReadConfigFile();
             string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";

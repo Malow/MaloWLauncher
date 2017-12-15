@@ -68,6 +68,25 @@ namespace MaloWLauncher
             UpdateModsList(sender, e);
         }
 
+        private void OnLaunchParamDropDownChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // this is ugly and probably should exist in a file somewhere
+            string launchString = "";
+            switch(LaunchParamDropDown.SelectedIndex)
+            {
+                case 0:
+                    launchString = @"\dx9";
+                    break;
+                case 1:
+                    launchString = @"\dx11";
+                    break;
+                case 2:
+                    launchString = @"\dx12";
+                    break;
+            }
+            HelperFunctions.UpdatedLaunchParameters(launchString);
+        }
+
         private void RemoveAllMods_Clicked(object sender, RoutedEventArgs e)
         {
             HelperFunctions.UpdateToMod(null);
