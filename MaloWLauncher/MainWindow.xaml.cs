@@ -71,6 +71,7 @@ namespace MaloWLauncher
         private void RemoveAllMods_Clicked(object sender, RoutedEventArgs e)
         {
             HelperFunctions.UpdateToMod(null);
+            UpdateModsList(sender, e);
         }
 
         private void LaunchCiv5_Clicked(object sender, RoutedEventArgs e)
