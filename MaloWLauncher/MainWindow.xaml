@@ -49,17 +49,23 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn>
-                        <Label Content="Released: " FontSize="12"/>
+                        
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Released}" FontSize="12"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Released: " FontSize="12"/>
+                                    <Label Content="{Binding Released}" FontSize="12"/>
+                                </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" Click="ModButton_Clicked" Padding="5,0,5,0" Visibility="{Binding Path=CanInstall, Converter={StaticResource BoolToVis}}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="INSTALLED" Foreground="#009900" FontFamily="Impact" FontSize="18" Visibility="{Binding Path=IsInstalled, Converter={StaticResource BoolToVis}}" />
+                                    <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" Click="ModButton_Clicked" Padding="5,0,5,0" Visibility="{Binding Path=CanInstall, Converter={StaticResource BoolToVis}}" />
+                                </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
