@@ -80,7 +80,7 @@ namespace MaloWLauncher
                     {
                         this.InstalledText = "(INSTALLED)";
                     }
-                    NotifyPropertyChanged("InstalledText");
+                    NotifyPropertyChanged("CanInstall");
                 }
             }
         }
