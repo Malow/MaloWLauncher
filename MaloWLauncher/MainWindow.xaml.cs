@@ -85,7 +85,9 @@ namespace MaloWLauncher
             if(mod.IsDownloaded)
             {
                 HelperFunctions.UpdateToMod(mod);
-            } else
+                UpdateModsList(sender, e);
+            }
+            else
             {
                 DownloadMod(mod);
             }
@@ -179,6 +181,15 @@ namespace MaloWLauncher
                 foreach (ModModel mod in modModels)
                 {
                     mod.IsDownloaded = HelperFunctions.IsModDownloaded(mod.Name);
+                }
+            }));
+        }
+
+        private void UpdateModListInstalledStatus()
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                foreach (ModModel mod in modModels)
+                {
                     mod.IsInstalled = HelperFunctions.IsModInstalled(mod.Name);
                 }
             }));
