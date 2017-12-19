@@ -81,7 +81,7 @@ namespace MaloWLauncher
                     launchString = @"\dx11";
                     break;
                 case 2:
-                    launchString = @"\dx12";
+                    launchString = @"\win8";
                     break;
             }
             HelperFunctions.UpdatedLaunchParameters(launchString);
