@@ -9,5 +9,10 @@ namespace MaloWLauncher
     class DataFile
     {
         public string installedMod;
+
+        public DataFile()
+        {
+            this.installedMod = "none";
+        }
     }
 }

@@ -74,28 +74,11 @@ namespace MaloWLauncher
             UpdateModsList(sender, e);
         }
 
-        private void SetGameLocation_Clicked(object sender, RoutedEventArgs e)
+        private void Options_Clicked(object sender, RoutedEventArgs e)
         {
-            HelperFunctions.OpenFileBrowserAndSetConfigGameLocation();
-        }
-
-        private void OnLaunchParamDropDownChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // this is ugly and probably should exist in a file somewhere
-            string launchString = "";
-            switch(LaunchParamDropDown.SelectedIndex)
-            {
-                case 0:
-                    launchString = @"\dx9";
-                    break;
-                case 1:
-                    launchString = @"\dx11";
-                    break;
-                case 2:
-                    launchString = @"\win8";
-                    break;
-            }
-            HelperFunctions.UpdatedLaunchParameters(launchString);
+            OptionsPopupWindow popup = new OptionsPopupWindow();
+            popup.Owner = Application.Current.MainWindow;
+            popup.Show();
         }
 
         private void RemoveAllMods_Clicked(object sender, RoutedEventArgs e)

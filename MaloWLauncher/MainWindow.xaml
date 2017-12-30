@@ -21,20 +21,14 @@
             </ObjectDataProvider.ObjectInstance>
         </ObjectDataProvider>
         <clr:String x:Key="SampleVersion">v0.0.1</clr:String>
+        <Image x:Key="Cogwheel" Source="images/cogwheel.png"/>
     </Window.Resources>
     <Grid>
         <Label Content="MaloWLauncher" FontSize="28" Margin="10,0,-10,0"/>
-        <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="316,9,-316,-9"/>
-        <Button Content="Refresh" Margin="0,10,10,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-        <StackPanel Margin="10, 50, 10, 10" Width="120" HorizontalAlignment="Left">
-            <ComboBox Name="LaunchParamDropDown" SelectionChanged="OnLaunchParamDropDownChanged">
-                <ComboBoxItem>DirectX 9</ComboBoxItem>
-                <ComboBoxItem IsSelected="True">DirectX 10 &amp; 11</ComboBoxItem>
-                <ComboBoxItem>Windows 8 - Touch Enabled</ComboBoxItem>
-            </ComboBox>
-        </StackPanel>
-        <Button Content="Set game location" Margin="146,50,0,0" Click="SetGameLocation_Clicked" FontSize="12" Height="22" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <ListView Margin="10,90,10,50" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
+        <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="227,9,-227,-9"/>
+        <Button Content="Refresh" Margin="0,9,50,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Button Content="{StaticResource Cogwheel}" Margin="0,9,10,0" Click="Options_Clicked" FontSize="20" Height="35" Width="35" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <ListView Margin="10,50" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Focusable" Value="False"/>

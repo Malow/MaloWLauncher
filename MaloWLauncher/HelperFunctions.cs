@@ -35,11 +35,17 @@ namespace MaloWLauncher
             "UI_bc1",
         });
 
-        public static void UpdatedLaunchParameters(string launchString)
+        public static void UpdateLaunchParameters(string launchString)
         {
             ConfigFile configFile = ReadConfigFile();
             configFile.launchParameters = launchString;
             File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
+        }
+
+        public static string GetLaunchParameters()
+        {
+            ConfigFile configFile = ReadConfigFile();
+            return configFile.launchParameters;
         }
 
         public static void UpdateToMod(ModModel mod)
@@ -83,10 +89,8 @@ namespace MaloWLauncher
         {
             if (!File.Exists(@"config.txt"))
             {
-                // Create a default config file with gameLocation pointing to default steam location if it doesn't exist.
+                // Create a default config file with default values if it does not exist
                 ConfigFile configFile = new ConfigFile();
-                configFile.gameLocation = @"C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization V";
-                configFile.launchParameters = @"\dx11";
                 File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
             }
             return JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(@"config.txt"));
@@ -98,7 +102,6 @@ namespace MaloWLauncher
             {
                 // Create a default data file with no mods installed.
                 DataFile dataFile = new DataFile();
-                dataFile.installedMod = "none";
                 File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile, Formatting.Indented));
             }
             return JsonConvert.DeserializeObject<DataFile>(File.ReadAllText(@"data.txt"));
