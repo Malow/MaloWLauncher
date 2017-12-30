@@ -43,6 +43,12 @@ namespace MaloWLauncher
         
         private void Window_ContentRendered(object sender, EventArgs e)
         {
+            if (!HelperFunctions.IsConfigGameLocationValid())
+            {
+                SetGameLocationPopupWindow popup = new SetGameLocationPopupWindow();
+                popup.Owner = Application.Current.MainWindow;
+                popup.Show();
+            }
             UpdateModsList(sender, e);
             this.VersionLabel.Content = "v" + Globals.VERSION;
         }
@@ -66,6 +72,11 @@ namespace MaloWLauncher
         private void Refresh_Clicked(object sender, RoutedEventArgs e)
         {
             UpdateModsList(sender, e);
+        }
+
+        private void SetGameLocation_Clicked(object sender, RoutedEventArgs e)
+        {
+            HelperFunctions.OpenFileBrowserAndSetConfigGameLocation();
         }
 
         private void OnLaunchParamDropDownChanged(object sender, SelectionChangedEventArgs e)

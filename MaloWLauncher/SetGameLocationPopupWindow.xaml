@@ -1,0 +1,14 @@
+﻿<Window x:Class="MaloWLauncher.SetGameLocationPopupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaloWLauncher"
+        mc:Ignorable="d"
+        Title="Game Location not found" Height="200" Width="400">
+    <Grid>
+        <Label x:Name="label1" Content="Please press Browse and locate the" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0"/>
+        <Label x:Name="label2" Content="Launcher.exe file in your Civilization 5 folder" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="24,24,24,0"/>
+        <Button Content="Browse" Click="Browse_Clicked" FontSize="12" Height="20" Width="80" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,0" />
+    </Grid>
+</Window>

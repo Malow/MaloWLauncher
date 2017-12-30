@@ -39,10 +39,10 @@ namespace MaloWLauncher
         {
             ConfigFile configFile = ReadConfigFile();
             configFile.launchParameters = launchString;
-            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile));
+            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
         }
 
-    public static void UpdateToMod(ModModel mod)
+        public static void UpdateToMod(ModModel mod)
         {
             ConfigFile configFile = ReadConfigFile();
             string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";
@@ -66,7 +66,7 @@ namespace MaloWLauncher
                 dataFile.installedMod = "none";
             }
 
-            File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile));
+            File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile, Formatting.Indented));
         }
 
         public static void LaunchCiv5()
@@ -87,7 +87,7 @@ namespace MaloWLauncher
                 ConfigFile configFile = new ConfigFile();
                 configFile.gameLocation = @"C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization V";
                 configFile.launchParameters = @"\dx11";
-                File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile));
+                File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
             }
             return JsonConvert.DeserializeObject<ConfigFile>(File.ReadAllText(@"config.txt"));
         }
@@ -99,7 +99,7 @@ namespace MaloWLauncher
                 // Create a default data file with no mods installed.
                 DataFile dataFile = new DataFile();
                 dataFile.installedMod = "none";
-                File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile));
+                File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile, Formatting.Indented));
             }
             return JsonConvert.DeserializeObject<DataFile>(File.ReadAllText(@"data.txt"));
         }
@@ -136,6 +136,31 @@ namespace MaloWLauncher
                 return JsonConvert.DeserializeObject<ModList>(json);
             }
         }
+
+        public static void OpenFileBrowserAndSetConfigGameLocation()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".exe",
+                Filter = "Civ5|Launcher.exe"
+            };
+            dlg.ShowDialog();
+            string gameLocation = dlg.FileName.Replace("\\Launcher.exe", "");
+            ConfigFile configFile = ReadConfigFile();
+            configFile.gameLocation = gameLocation;
+            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
+        }
+
+        public static bool IsConfigGameLocationValid()
+        {
+            ConfigFile configFile = ReadConfigFile();
+            if(configFile.gameLocation == null || configFile.gameLocation == "")
+            {
+                return false;
+            }
+            DirectoryInfo dir = new DirectoryInfo(configFile.gameLocation);
+            return dir.Exists;
+        }
         
         private static void DirectoryCopy(string sourceDirName, string destDirName)
         {
@@ -143,9 +168,7 @@ namespace MaloWLauncher
 
             if (!dir.Exists)
             {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
             }
 
             DirectoryInfo[] dirs = dir.GetDirectories();

@@ -60,6 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="DataFile.cs" />
     <Compile Include="ConfigFile.cs" />
+    <Compile Include="SetGameLocationPopupWindow.xaml.cs">
+      <DependentUpon>SetGameLocationPopupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewVersionPopupWindow.xaml.cs">
       <DependentUpon>NewVersionPopupWindow.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SetGameLocationPopupWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="NewVersionPopupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

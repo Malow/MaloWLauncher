@@ -33,6 +33,7 @@
                 <ComboBoxItem>Windows 8 - Touch Enabled</ComboBoxItem>
             </ComboBox>
         </StackPanel>
+        <Button Content="Set game location" Margin="146,50,0,0" Click="SetGameLocation_Clicked" FontSize="12" Height="22" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <ListView Margin="10,90,10,50" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
