@@ -73,6 +73,7 @@ namespace MaloWLauncher
         private void Refresh_Clicked(object sender, RoutedEventArgs e)
         {
             UpdateModsList(sender, e);
+            UpdateModListDownloadedStatus();
         }
 
         private void Options_Clicked(object sender, RoutedEventArgs e)
@@ -241,12 +242,13 @@ namespace MaloWLauncher
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
+                            string modName = mod.name + " " + version.version;
                             modModels.Add(new ModModel()
                             {
-                                Name = mod.name + " " + version.version,
+                                Name = modName,
                                 Released = version.released.ToString("yyyy-MM-dd"),
-                                IsDownloaded = HelperFunctions.IsModDownloaded(mod.name),
-                                IsInstalled = HelperFunctions.IsModInstalled(mod.name),
+                                IsDownloaded = HelperFunctions.IsModDownloaded(modName),
+                                IsInstalled = HelperFunctions.IsModInstalled(modName),
                                 DownloadURL = version.downloadURL
                             });
                         }));
