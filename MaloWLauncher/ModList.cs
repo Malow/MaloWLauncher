@@ -8,15 +8,21 @@ namespace MaloWLauncher
 {
     public class ModList
     {
-        public class ModInfo
+        public class Mod
         {
-            public string Name { get; set; }
-            public DateTime Released { get; set; }
-            public string DownloadURL { get; set; }
+            public class Version
+            {
+                public string version { get; set; }
+                public DateTime released { get; set; }
+                public string downloadURL { get; set; }
+            }
+
+            public string name { get; set; }
+            public List<Version> versions { get; set; }
         }
 
         public string latestClientVersion { get; set; }
         public string latestClientDownloadUrl { get; set; }
-        public List<ModInfo> mods { get; set; }
+        public List<Mod> mods { get; set; }
     }
 }

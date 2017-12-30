@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.IO.Compression;
 using static MaloWLauncher.ModList;
+using static MaloWLauncher.ModModel;
 
 namespace MaloWLauncher
 {    
@@ -230,24 +231,26 @@ namespace MaloWLauncher
                         popup.Owner = Application.Current.MainWindow;
                         popup.Show();
                     }));
-                    return;
                 }
 
                 Application.Current.Dispatcher.Invoke(new Action(() => { modModels.Clear(); }));
             
-                foreach (ModInfo modInfo in modList.mods)
+                foreach (Mod mod in modList.mods)
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() => 
+                    foreach (ModList.Mod.Version version in mod.versions)
                     {
-                        modModels.Add(new ModModel()
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            Name = modInfo.Name,
-                            Released = modInfo.Released.ToString("yyyy-MM-dd"),
-                            IsDownloaded = HelperFunctions.IsModDownloaded(modInfo.Name),
-                            IsInstalled = HelperFunctions.IsModInstalled(modInfo.Name),
-                            DownloadURL = modInfo.DownloadURL
-                        });
-                    }));
+                            modModels.Add(new ModModel()
+                            {
+                                Name = mod.name + " " + version.version,
+                                Released = version.released.ToString("yyyy-MM-dd"),
+                                IsDownloaded = HelperFunctions.IsModDownloaded(mod.name),
+                                IsInstalled = HelperFunctions.IsModInstalled(mod.name),
+                                DownloadURL = version.downloadURL
+                            });
+                        }));
+                    }
                 }
             }
             catch (Exception ex)

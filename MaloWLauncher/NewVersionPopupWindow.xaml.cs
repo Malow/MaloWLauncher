@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -24,11 +25,19 @@ namespace MaloWLauncher
             InitializeComponent();
             this.downloadUrl = downloadUrl;
         }
-        
+
         private void Download_Clicked(object sender, RoutedEventArgs e)
         {
             Process.Start(new ProcessStartInfo(this.downloadUrl));
             e.Handled = true;
+        }
+
+        void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                this.Owner.Activate();
+            }));
         }
     }
 }

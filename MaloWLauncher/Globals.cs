@@ -8,7 +8,7 @@ namespace MaloWLauncher
 {
     class Globals
     {
-        public static readonly string VERSION = @"0.0.1";
+        public static readonly string VERSION = @"0.0.2";
         public static readonly string SERVER_URL = @"http://MaloWLauncher.duckdns.org:9998/modlist";
     }
 }

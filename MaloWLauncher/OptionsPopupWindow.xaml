@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="Options" Height="200" Width="300">
     <Grid>
+        <Label x:Name="labelLaunchParams" Content="Launch Parameters:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <StackPanel Margin="162,12,0,48" Width="120" HorizontalAlignment="Left">
             <ComboBox x:Name="LaunchParamDropDown" SelectionChanged="OnLaunchParamDropDownChanged" SelectedValuePath="Content">
                 <ComboBoxItem Content="DirectX 9"/>
@@ -15,7 +16,6 @@
                 <ComboBoxItem Content="Windows 8 - Touch Enabled"/>
             </ComboBox>
         </StackPanel>
-        <Label x:Name="labelLaunchParams" Content="Launch Parameters:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="labelGameLocation" Content="Game Location:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Button Content="Set game location" Margin="162,45,0,0" Click="SetGameLocation_Clicked" FontSize="12" Height="22" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left"/>
     </Grid>
