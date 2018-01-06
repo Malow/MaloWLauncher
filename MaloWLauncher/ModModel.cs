@@ -11,11 +11,10 @@ namespace MaloWLauncher
     class ModModel : INotifyPropertyChanged
     {
         private string NameValue = String.Empty;
+        private string VersionValue = String.Empty;
         public string Released { get; set; }
-        public string ButtonText { get; set; } = "Download";
         private bool IsDownloadedValue = false;
         private bool IsInstalledValue = false;
-        public string InstalledText { get; set; } = "";
         public string DownloadURL { get; set; }
 
         public string Name
@@ -35,6 +34,23 @@ namespace MaloWLauncher
             }
         }
 
+        public string Version
+        {
+            get
+            {
+                return this.VersionValue;
+            }
+
+            set
+            {
+                if (value != this.VersionValue)
+                {
+                    this.VersionValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public bool IsDownloaded
         {
             get
@@ -47,16 +63,18 @@ namespace MaloWLauncher
                 if (value != this.IsDownloadedValue)
                 {
                     this.IsDownloadedValue = value;
-                    if (this.IsDownloadedValue == true)
-                    {
-                        this.ButtonText = "Install";
-                    }
-                    else
-                    {
-                        this.ButtonText = "Download";
-                    }
-                    NotifyPropertyChanged("ButtonText");
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("IsNotDownloaded");
+                    NotifyPropertyChanged("IsDownloadedButNotInstalled");
                 }
+            }
+        }
+
+        public bool IsNotDownloaded
+        {
+            get
+            {
+                return !this.IsDownloaded;
             }
         }
 
@@ -72,24 +90,31 @@ namespace MaloWLauncher
                 if (value != this.IsInstalledValue)
                 {
                     this.IsInstalledValue = value;
-                    if (this.IsInstalledValue == true)
-                    {
-                        this.InstalledText = "";
-                    }
-                    else
-                    {
-                        this.InstalledText = "(INSTALLED)";
-                    }
-                    NotifyPropertyChanged("CanInstall");
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("IsDownloadedButNotInstalled");
                 }
             }
         }
 
-        public bool CanInstall
+        public bool IsDownloadedButNotInstalled
         {
             get
             {
-                return !this.IsInstalledValue;
+                return this.IsDownloaded && !this.IsInstalled;
+            }
+        }
+
+        private bool IsExpandedValue = false;
+        public bool IsExpanded
+        {
+            get { return IsExpandedValue; }
+            set
+            {
+                if (value != this.IsExpandedValue)
+                {
+                    IsExpandedValue = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
@@ -99,9 +124,14 @@ namespace MaloWLauncher
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public string GetFullName()
+        {
+            return this.Name + " " + this.Version;
+        }
+
         public override string ToString()
         {
-            return this.Name;
+            return this.GetFullName();
         }
     }
 }

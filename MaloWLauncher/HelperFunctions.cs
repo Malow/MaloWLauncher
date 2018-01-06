@@ -42,13 +42,41 @@ namespace MaloWLauncher
             File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
         }
 
+        public static void AddExpandedModToConfig(string modName)
+        {
+            ConfigFile configFile = ReadConfigFile();
+            if(configFile.expandedMods.Contains(modName))
+            {
+                return;
+            }
+            configFile.expandedMods.Add(modName);
+            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
+        }
+
+        public static void RemoveExpandedModToConfig(string modName)
+        {
+            ConfigFile configFile = ReadConfigFile();
+            if (!configFile.expandedMods.Contains(modName))
+            {
+                return;
+            }
+            configFile.expandedMods.Remove(modName);
+            File.WriteAllText(@"config.txt", JsonConvert.SerializeObject(configFile, Formatting.Indented));
+        }
+
+        public static bool IsModExpanded(string modName)
+        {
+            ConfigFile configFile = ReadConfigFile();
+            return configFile.expandedMods.Contains(modName);
+        }
+
         public static string GetLaunchParameters()
         {
             ConfigFile configFile = ReadConfigFile();
             return configFile.launchParameters;
         }
 
-        public static void UpdateToMod(ModModel mod)
+        public static void InstallMod(ModModel mod)
         {
             ConfigFile configFile = ReadConfigFile();
             string dlcFolder = configFile.gameLocation + @"\Assets\DLC\";
@@ -64,12 +92,12 @@ namespace MaloWLauncher
             DataFile dataFile = new DataFile();
             if (mod != null)
             {
-                dataFile.installedMod = mod.Name;
-                DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.Name, dlcFolder);
+                dataFile.installedMod = mod.GetFullName();
+                DirectoryCopy(System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + @"\mods\" + mod.GetFullName(), dlcFolder);
             }
             else
             {
-                dataFile.installedMod = "none";
+                dataFile.installedMod = null;
             }
 
             File.WriteAllText(@"data.txt", JsonConvert.SerializeObject(dataFile, Formatting.Indented));
@@ -163,6 +191,18 @@ namespace MaloWLauncher
             }
             DirectoryInfo dir = new DirectoryInfo(configFile.gameLocation);
             return dir.Exists;
+        }
+
+        public static bool IsNewVersionRequired(string version)
+        {
+            String[] serverVersions = version.Split('.');
+            String[] clientVersions = Globals.VERSION.Split('.');
+            // Only Major/Minor version requires new client version.
+            if(serverVersions[0] != clientVersions[0] || serverVersions[1] != clientVersions[1])
+            {
+                return true;
+            }
+            return false;
         }
         
         private static void DirectoryCopy(string sourceDirName, string destDirName)

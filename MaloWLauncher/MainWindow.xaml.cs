@@ -35,6 +35,10 @@ namespace MaloWLauncher
         {
             base.OnInitialized(e);
             ModsList.ItemsSource = modModels;
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ModsList.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Name");
+            view.GroupDescriptions.Add(groupDescription);
         }
 
         public MainWindow()
@@ -61,19 +65,20 @@ namespace MaloWLauncher
             GridView gView = listView.View as GridView;
 
             var workingWidth = listView.ActualWidth - SystemParameters.VerticalScrollBarWidth;
-            var col1 = 0.33;
-            var col2 = 0.33;
-            var col3 = 0.34;
+            var col1 = 0.25;
+            var col2 = 0.12;
+            var col3 = 0.23;
+            var col4 = 0.45;
 
             gView.Columns[0].Width = workingWidth * col1;
             gView.Columns[1].Width = workingWidth * col2;
             gView.Columns[2].Width = workingWidth * col3;
+            gView.Columns[3].Width = workingWidth * col4;
         }
 
         private void Refresh_Clicked(object sender, RoutedEventArgs e)
         {
             UpdateModsList(sender, e);
-            UpdateModListDownloadedStatus();
         }
 
         private void Options_Clicked(object sender, RoutedEventArgs e)
@@ -83,9 +88,9 @@ namespace MaloWLauncher
             popup.Show();
         }
 
-        private void RemoveAllMods_Clicked(object sender, RoutedEventArgs e)
+        private void UninstallAllMods_Clicked(object sender, RoutedEventArgs e)
         {
-            HelperFunctions.UpdateToMod(null);
+            HelperFunctions.InstallMod(null);
             UpdateModsList(sender, e);
         }
 
@@ -94,18 +99,33 @@ namespace MaloWLauncher
             HelperFunctions.LaunchCiv5();
         }
 
-        private void ModButton_Clicked(object sender, RoutedEventArgs e)
+        private void DownloadMod_Clicked(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             ModModel mod = button.DataContext as ModModel;
-            if(mod.IsDownloaded)
+            DownloadMod(mod);
+            UpdateModListStatuses();
+        }
+
+        private void InstallMod_Clicked(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            ModModel mod = button.DataContext as ModModel;
+            HelperFunctions.InstallMod(mod);
+            UpdateModListStatuses();
+        }
+
+        private void GroupingExpander_Clicked(object sender, RoutedEventArgs e)
+        {
+            Expander expander = sender as Expander;
+            string modName = (string) expander.Tag;
+            if(expander.IsExpanded)
             {
-                HelperFunctions.UpdateToMod(mod);
-                UpdateModsList(sender, e);
+                HelperFunctions.AddExpandedModToConfig(modName);
             }
             else
             {
-                DownloadMod(mod);
+                HelperFunctions.RemoveExpandedModToConfig(modName);
             }
         }
 
@@ -161,7 +181,6 @@ namespace MaloWLauncher
                 {
                     ZipFile.ExtractToDirectory(modFolder + @"\mod.zip", modFolder);
                     File.Delete(modFolder + @"\mod.zip");
-                    UpdateModListDownloadedStatus();
                 }
             }
             finally
@@ -186,27 +205,19 @@ namespace MaloWLauncher
             progressPopupWindow.Show();
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
-            worker.DoWork += DoUpdateModsList;
+            worker.DoWork += UpdateModsList;
             worker.ProgressChanged += UpdatePopupProgressBar;
             worker.RunWorkerAsync();
         }
 
-        private void UpdateModListDownloadedStatus()
+        private void UpdateModListStatuses()
         {
             Application.Current.Dispatcher.Invoke(new Action(() => {
                 foreach (ModModel mod in modModels)
                 {
-                    mod.IsDownloaded = HelperFunctions.IsModDownloaded(mod.Name);
-                }
-            }));
-        }
-
-        private void UpdateModListInstalledStatus()
-        {
-            Application.Current.Dispatcher.Invoke(new Action(() => {
-                foreach (ModModel mod in modModels)
-                {
-                    mod.IsInstalled = HelperFunctions.IsModInstalled(mod.Name);
+                    mod.IsDownloaded = HelperFunctions.IsModDownloaded(mod.GetFullName());
+                    mod.IsInstalled = HelperFunctions.IsModInstalled(mod.GetFullName());
+                    mod.IsExpanded = HelperFunctions.IsModExpanded(mod.Name);
                 }
             }));
         }
@@ -218,19 +229,19 @@ namespace MaloWLauncher
                 progressPopupWindow.ProgressBar.Value = e.ProgressPercentage;
             }
         }
-
-        private void DoUpdateModsList(object sender, DoWorkEventArgs e)
+        
+        private void UpdateModsList(object sender, DoWorkEventArgs e)
         {
             try
             {
                 ModList modList = HelperFunctions.GetModsListFromServer();
-                if(modList.latestClientVersion != Globals.VERSION)
+                if(HelperFunctions.IsNewVersionRequired(modList.latestClientVersion))
                 {
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
                         NewVersionPopupWindow popup = new NewVersionPopupWindow(modList.latestClientDownloadUrl);
                         popup.Owner = Application.Current.MainWindow;
-                        popup.Show();
+                        popup.ShowDialog();
                     }));
                 }
 
@@ -242,13 +253,11 @@ namespace MaloWLauncher
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            string modName = mod.name + " " + version.version;
                             modModels.Add(new ModModel()
                             {
-                                Name = modName,
+                                Name = mod.name,
                                 Released = version.released.ToString("yyyy-MM-dd"),
-                                IsDownloaded = HelperFunctions.IsModDownloaded(modName),
-                                IsInstalled = HelperFunctions.IsModInstalled(modName),
+                                Version = version.version,
                                 DownloadURL = version.downloadURL
                             });
                         }));
@@ -269,6 +278,7 @@ namespace MaloWLauncher
             {
                 if(progressPopupWindow != null)
                 {
+                    UpdateModListStatuses();
                     Thread.Sleep(300); // Chill a bit to allow the loading-bar to be visible if the request completed really quickly to show the user that something actually happened when the refresh button was pressed.
                     Application.Current.Dispatcher.Invoke(new Action(() => { progressPopupWindow.Close(); }));
                     progressPopupWindow = null;

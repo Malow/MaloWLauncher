@@ -8,15 +8,15 @@
         xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         ContentRendered="Window_ContentRendered"
-        Title="MaloWLauncher" Height="700" Width="500">
+        Title="MaloWLauncher" Height="700" Width="500" Background="#FF505961">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <ObjectDataProvider x:Key="SampleMods">
             <ObjectDataProvider.ObjectInstance>
                 <x:Array Type="local:ModModel">
-                    <local:ModModel Name="nq1" Released="2017-11-29"/>
-                    <local:ModModel Name="nq2" Released="2017-11-29"/>
-                    <local:ModModel Name="nq3" Released="2017-11-29"/>
+                    <local:ModModel Name="NQMod" Released="2017-11-29" Version="v12.3" IsDownloaded="True" IsInstalled="True"/>
+                    <local:ModModel Name="NQMod" Released="2017-11-29" Version="v12.2" IsDownloaded="True"/>
+                    <local:ModModel Name="LekMod" Released="2017-11-29" Version="v15F"/>
                 </x:Array>
             </ObjectDataProvider.ObjectInstance>
         </ObjectDataProvider>
@@ -24,32 +24,82 @@
         <Image x:Key="Cogwheel" Source="images/cogwheel.png"/>
     </Window.Resources>
     <Grid>
-        <Label Content="MaloWLauncher" FontSize="28" Margin="10,0,-10,0"/>
-        <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="227,9,-227,-9"/>
+        <Label Content="MaloWLauncher" FontSize="28" Margin="10,0,-10,0" Foreground="#FFE8E8E8"/>
+        <Label Name="VersionLabel" Content="{Binding Source={StaticResource SampleVersion}}" FontSize="20" Margin="227,9,-227,-9" Foreground="#FFE8E8E8" />
         <Button Content="Refresh" Margin="0,9,50,0" Click="Refresh_Clicked" FontSize="20" Height="35" Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"/>
         <Button Content="{StaticResource Cogwheel}" Margin="0,9,10,0" Click="Options_Clicked" FontSize="20" Height="35" Width="35" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-        <ListView Margin="10,50" x:Name="ModsList" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged">
+        <ListView x:Name="ModsList" Margin="10,50" ItemsSource="{Binding Source={StaticResource SampleMods}}" SizeChanged="ListView_SizeChanged" AlternationCount="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="FrameworkElement.Margin" Value="0"/>
                     <Setter Property="Focusable" Value="False"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Height" Value="30" />
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                            <Setter Property="Background" Value="#FFF0F0F0" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex"  Value="1">
+                            <Setter Property="Background" Value="#FFFFFFFF" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                            <Setter Property="Background" Value="#FFB9DEBF" />
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
+
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander IsExpanded="{Binding Items[0].IsExpanded}" ButtonBase.Click="GroupingExpander_Clicked" Tag="{Binding Name}">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="22" VerticalAlignment="Bottom" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
 
             <ListView.View>
                 <GridView>
                     <GridView.ColumnHeaderContainerStyle>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsEnabled" Value="False"/>
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn>
+                    <GridViewColumn Header="Name">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="images/greencheckmark.png" VerticalAlignment="Center" Visibility="{Binding Path=IsInstalled, Converter={StaticResource BoolToVis}}"  />
-                                    <Label Content="{Binding Name}" FontSize="16"/>
+                                    <Image Source="images/greencheckmark.png" VerticalAlignment="Center" Visibility="{Binding Path=IsInstalled, Converter={StaticResource BoolToVis}}" Height="18" />
+                                    <Label Content="INSTALLED" Foreground="#009900" FontFamily="Impact" FontSize="18" Visibility="{Binding Path=IsInstalled, Converter={StaticResource BoolToVis}}" Padding="0,0,0,0" Margin="5,0,0,0" />
                                 </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Version">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Version}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,0,0" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Release Date">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Released}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,0,0" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -57,19 +107,11 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Released: " FontSize="12"/>
-                                    <Label Content="{Binding Released}" FontSize="12"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="INSTALLED" Foreground="#009900" FontFamily="Impact" FontSize="18" Visibility="{Binding Path=IsInstalled, Converter={StaticResource BoolToVis}}" />
-                                    <Border Visibility="{Binding Path=CanInstall, Converter={StaticResource BoolToVis}}" CornerRadius="4" BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Center" >
-                                        <Button Content="{Binding ButtonText}" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center" Click="ModButton_Clicked" Padding="5,0,5,0" Visibility="{Binding Path=CanInstall, Converter={StaticResource BoolToVis}}" />
+                                    <Border Visibility="{Binding Path=IsNotDownloaded, Converter={StaticResource BoolToVis}}" CornerRadius="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" >
+                                        <Button Content="Download" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Click="DownloadMod_Clicked" Padding="5,0,5,0" />
+                                    </Border>
+                                    <Border Visibility="{Binding Path=IsDownloadedButNotInstalled, Converter={StaticResource BoolToVis}}" CornerRadius="1" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" >
+                                        <Button Content="Install" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Click="InstallMod_Clicked" Padding="5,0,5,0" />
                                     </Border>
                                 </StackPanel>
                             </DataTemplate>
@@ -78,7 +120,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Remove All Mods" Margin="10,50,10,10" Click="RemoveAllMods_Clicked" FontSize="20" Height="35" Width="180" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button Content="Uninstall All Mods" Margin="10,50,10,10" Click="UninstallAllMods_Clicked" FontSize="20" Height="35" Width="180" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
         <Button Content="Launch Civ 5" Margin="10,50,10,10" Click="LaunchCiv5_Clicked" FontSize="20" Height="35" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

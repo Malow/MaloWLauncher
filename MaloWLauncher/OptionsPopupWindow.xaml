@@ -9,7 +9,7 @@
         Title="Options" Height="200" Width="300">
     <Grid>
         <Label x:Name="labelLaunchParams" Content="Launch Parameters:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <StackPanel Margin="162,12,0,48" Width="120" HorizontalAlignment="Left">
+        <StackPanel Margin="150,12,0,48" Width="120" HorizontalAlignment="Left">
             <ComboBox x:Name="LaunchParamDropDown" SelectionChanged="OnLaunchParamDropDownChanged" SelectedValuePath="Content">
                 <ComboBoxItem Content="DirectX 9"/>
                 <ComboBoxItem Content="DirectX 10 &amp; 11"/>
@@ -17,6 +17,6 @@
             </ComboBox>
         </StackPanel>
         <Label x:Name="labelGameLocation" Content="Game Location:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
-        <Button Content="Set game location" Margin="162,45,0,0" Click="SetGameLocation_Clicked" FontSize="12" Height="22" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button Content="Set game location" Margin="150,45,0,0" Click="SetGameLocation_Clicked" FontSize="12" Height="22" Width="120" VerticalAlignment="Top" HorizontalAlignment="Left"/>
     </Grid>
 </Window>
