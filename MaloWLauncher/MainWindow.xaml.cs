@@ -145,7 +145,7 @@ namespace MaloWLauncher
             {
                 Directory.CreateDirectory(modsFolder);
             }
-            string modFolder = modsFolder + mod.Name;
+            string modFolder = modsFolder + mod.GetFullName();
             if (!Directory.Exists(modFolder))
             {
                 Directory.CreateDirectory(modFolder);
@@ -156,7 +156,7 @@ namespace MaloWLauncher
                 wc.DownloadFileCompleted += DownloadCompleted;
                 wc.DownloadProgressChanged += UpdatePopupProgressBar;
                 wc.QueryString.Add("modFolder", modFolder);
-                wc.DownloadFileAsync(new System.Uri(mod.DownloadURL), @"mods\" + mod.Name + @"\mod.zip");
+                wc.DownloadFileAsync(new System.Uri(mod.DownloadURL), @"mods\" + mod.GetFullName() + @"\mod.zip");
             }
         }
         
